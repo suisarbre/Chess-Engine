@@ -47,11 +47,15 @@ def drawBoard(screen):
         for c in range(DIMENTION):
             color = colors[(r+c)%2]
             pg.draw.rect(screen,color,pg.Rect(c*SQ_SIZE,r*SQ_SIZE,SQ_SIZE,SQ_SIZE))
-    pass
     
 #Draws pieces based on the gamestate
 def drawPieces(screen,board):
-    pass
+    for r in range(DIMENTION):
+        for c in range(DIMENTION):
+            piece = board[r][c]
+            if piece != "--": #if the board is not empty
+                screen.blit(IMAGES[piece],pg.Rect(c*SQ_SIZE,r*SQ_SIZE,SQ_SIZE,SQ_SIZE))
+                
     
 
 if __name__ == "__main__":
