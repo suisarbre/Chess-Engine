@@ -26,11 +26,30 @@ def main():
     gs = ChessEngine.GameState()
     loadImages()
     running = True
-    
+    sqSelected = () 
+    playerClicks = [] #keeps track of player clicks
     while running:#game loop
         for e in pg.event.get():
-            if e.type == pg.QUIT:
+            if e.type == pg.QUIT: #exit event
                 running = False
+                
+            elif e.type == pg.MOUSEBUTTONDOWN:
+                location = pg.mouse.get_pos() #(x,y) tuple
+                col = location[0] // SQ_SIZE
+                row = location[1] // SQ_SIZE
+                if sqSelected == (row,col):#user clicks the same place twice
+                    sqSelected = ()
+                    playerClicks = []
+                else:
+                    sqSelected = (row,col)
+                    playerClicks.append(sqSelected)
+                if len(playerClicks) == 2: #if user clicked two different places
+                    move = ChessEngine.Move(playerClicks[0],playerClicks[1],gs.board)
+                    print(move.getChessNotation())
+                    gs.makeMove(move)
+                    sqSelected = ()
+                    playerClicks = []
+                    
         drawGameState(screen,gs)
         clock.tick(MAX_FPS)
         pg.display.flip()
