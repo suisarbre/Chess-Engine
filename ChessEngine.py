@@ -30,11 +30,20 @@ class GameState():
         #keeps the log
         self.moveLog = []
         
+    #takes Move class as a parameter, won't do castling and en passant
     def makeMove(self,move):
         self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.pieceMoved
         self.moveLog.append(move)
         self.whiteToMove = not self.whiteToMove #swap turns
+        
+    #Undo the last move based on self.moveLog
+    def undoMove(self):
+        if self.moveLog:
+            lastMove = self.moveLog.pop() #returns the last element of the list
+            self.board[lastMove.endRow][lastMove.endCol] = lastMove.pieceCaptured
+            self.board[lastMove.startRow][lastMove.startCol] = lastMove.pieceMoved
+            self.whiteToMove = not self.whiteToMove
         
 
     

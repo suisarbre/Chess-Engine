@@ -26,13 +26,14 @@ def main():
     gs = ChessEngine.GameState()
     loadImages()
     running = True
-    sqSelected = () 
-    playerClicks = [] #keeps track of player clicks
+    sqSelected = () # length 2 tuple
+    playerClicks = [] #keeps track of player clicks, length 2 list consists of 2 sqSelected
     while running:#game loop
         for e in pg.event.get():
             if e.type == pg.QUIT: #exit event
                 running = False
-                
+            
+            #Mouse click
             elif e.type == pg.MOUSEBUTTONDOWN:
                 location = pg.mouse.get_pos() #(x,y) tuple
                 col = location[0] // SQ_SIZE
@@ -48,6 +49,15 @@ def main():
                     print(move.getChessNotation())
                     gs.makeMove(move)
                     sqSelected = ()
+                    playerClicks = []
+            
+            #Key handlers
+            
+            #'Z' undo
+            elif e.type == pg.KEYDOWN:
+                if e.key == pg.K_z:
+                    gs.undoMove()
+                    sqSelected = ()#When undo, user expects "resetting" clicks
                     playerClicks = []
                     
         drawGameState(screen,gs)
